@@ -1071,7 +1071,7 @@ const SourceCode = {
 
             tbody.push(`
                 <tr class='srccode'>
-                    <td valign="top" class='line_num right_border' data-line=${line_num} style='width: 30px;'>
+                    <td valign="top" class='line_num' data-line=${line_num} style='width: 30px;'>
                         <div>${line_num}</div>
                     </td>
 

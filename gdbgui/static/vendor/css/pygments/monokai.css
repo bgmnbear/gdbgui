@@ -5,12 +5,13 @@
 .monokai .loc { color: white; }
 
 /* when hovering, set background color of entire row */
-.monokai .paused_on_line, .monokai .srccode:hover td{
+.monokai .paused_on_line, .monokai td.loc:hover {
     background-color: #444;
     border-style: solid;
     border-top-width: 1px;
     border-bottom-width: 1px;
     border-left-width: 0px;
+    border-right-width: 0px;
     border-color: #868686 !important;
 }
 

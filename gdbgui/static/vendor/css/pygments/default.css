@@ -5,7 +5,7 @@
 .default .loc { color: black; }
 
 /* when hovering, set background color of entire row */
-.default .paused_on_line, .default .srccode:hover td{
+.default .paused_on_line,  .default td.loc:hover{
     background-color: #bbefff;
     border-style: solid;
     border-top-width: 1px;
