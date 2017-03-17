@@ -48,11 +48,12 @@ setup(
     zip_safe=False,
     cmdclass={'test': TestCommand},
     install_requires=[
-        'Flask>=0.12',
-        'pygdbmi>=0.7.3.3',
-        'pypugjs>=4.2.0',
+        'Flask>=0.12',  # to run server
+        'pygdbmi>=0.7.3.3',  # to parse gdb output
+        'pypugjs>=4.2.0',  # to use .pug instead of .html
         'Flask-SocketIO>=2.8.3',  # for websockets
         'eventlet>=0.20.1',  # for websockets
+        'Pygments>=2.2.0',  # for syntax highlighting
     ],
     classifiers=[
         'Intended Audience :: Developers',
