@@ -54,7 +54,7 @@ elif int(match.groups()[0]) >= 16:
 app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR)
 app.config['initial_binary_and_args'] = []
 app.config['gdb_path'] = DEFAULT_GDB_EXECUTABLE
-app.config['show_gdb_upgrades'] = True
+app.config['show_gdbgui_upgrades'] = True
 
 # switch to gevent once https://github.com/miguelgrinberg/Flask-SocketIO/issues/413 is resolved
 socketio = SocketIO(async_mode='eventlet')
