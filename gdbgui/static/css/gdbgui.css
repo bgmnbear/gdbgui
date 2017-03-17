@@ -10,6 +10,8 @@ pre{
 td{
     vertical-align: top;
 }
+
+
 /* styling for generic classes */
 .bold{
     font-weight: bold;
@@ -65,7 +67,7 @@ td{
     cursor: pointer;
 }
 .gdb_content_div{
-    flex-direction: column;
+    /*flex-direction: column;*/
     background-color: white;
 }
 .sent_command:hover{
@@ -328,7 +330,7 @@ footer ul{
 
 /* awesomeplete wraps inputs in a div, and the div is really small. Make it big. */
 div.awesomplete{
-    width: 100%;
+    /*width: 100%;*/
 }
 /* auto-complete library (awesomplete) has unlimited dropdown size.
 Limit to 200px high, and add scrollbar, so it doesn't take over the page */
@@ -336,3 +338,51 @@ Limit to 200px high, and add scrollbar, so it doesn't take over the page */
     overflow: auto;
     max-height: 200px;
 }
+
+
+
+
+
+  body {
+    /*padding: 8px;*/
+    /*background-color: #F6F6F6;*/
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .split {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .content {
+    border: 1px solid #C0C0C0;
+    box-shadow: inset 0 1px 2px #e4e4e4;
+    /*background-color: #fff;*/
+  }
+
+  .gutter {
+    background-color: white;
+
+    background-repeat: no-repeat;
+    background-position: 50%;
+  }
+
+  .gutter.gutter-horizontal {
+    cursor: col-resize;
+    background-image: url('../grips/vertical.png');
+  }
+
+  .gutter.gutter-vertical {
+    cursor: row-resize;
+    background-image: url('../grips/horizontal.png');
+  }
+
+  .split.split-horizontal, .gutter.gutter-horizontal {
+    height: 100%;
+    float: left;
+  }

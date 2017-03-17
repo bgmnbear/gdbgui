@@ -384,9 +384,9 @@ const GdbApi = {
             window.onbeforeunload = () => null
 
             // show modal
-            Modal.render('gdb closed on server', `gdb (pid ${State.get('gdb_pid')}) was closed for this tab because the websocket connection for this tab was disconnected.
-                <p>
-                Each tab has its own instance of gdb running on the backend. Open new tab to start new instance of gdb.`)
+            // Modal.render('gdb closed on server', `gdb (pid ${State.get('gdb_pid')}) was closed for this tab because the websocket connection for this tab was disconnected.
+            //     <p>
+            //     Each tab has its own instance of gdb running on the backend. Open new tab to start new instance of gdb.`)
             debug_print('disconnected')
         });
     },
@@ -2956,22 +2956,54 @@ const process_gdb_response = function(response_array){
     }
 }
 
-/**
- * the w2ui library lets you compartmentalize your dom elements: http://w2ui.com/web/demo
- * I would prefer plan javascript, but this got gdbgui working quickly
- */
-const layout_style = 'background-color: #F5F6F7; border: 1px solid #dfdfdf; padding: 5px;';
-$('#layout').w2layout({
-    name: 'layout',
-    panels: [
-        { type: 'top',  size: 45, resizable: false, style: layout_style, content: $('#top'), overflow: 'hidden' },
-        // { type: 'left', size: 0, resizable: false, style: layout_style, content: 'todo - add file browser' },
-        { type: 'main', style: layout_style, content: $('#main'), overflow: 'hidden' },
-        // { type: 'preview', size: '50%', resizable: true, style: layout_style, content: 'preview' },
-        { type: 'right', size: '35%', 'min-width': '300px', resizable: true, style: layout_style, content: $('#right') },
-        { type: 'bottom', size: 300, resizable: true, style: layout_style, content: $('#bottom') }
-    ]
-});
+// /**
+//  * the w2ui library lets you compartmentalize your dom elements: http://w2ui.com/web/demo
+//  * I would prefer plan javascript, but this got gdbgui working quickly
+//  */
+// const layout_style = 'background-color: #F5F6F7; border: 1px solid #dfdfdf; padding: 5px;';
+// $('#layout').w2layout({
+//     name: 'layout',
+//     panels: [
+//         { type: 'top',  size: 105, resizable: false, style: layout_style, content: $('#top'), overflow: 'hidden' },
+//         // { type: 'left', size: 0, resizable: false, style: layout_style, content: 'todo - add file browser' },
+//         { type: 'main', style: layout_style, content: $('#main'), overflow: 'auto', size: 500, resizable:true },
+//         // { type: 'preview', size: '50%', resizable: true, style: layout_style, content: 'preview' },
+//         { type: 'right', size: '35%', 'min-width': '300px', resizable: true, style: layout_style, content: $('#right') },
+//         { type: 'bottom', size: 300, resizable: true, style: layout_style, content: $('#bottom') }
+//     ]
+// });
+
+
+    Split(['#middle_left', '#middle_right'], {
+      gutterSize: 9,
+      cursor: 'row-resize',
+      direction: 'horizontal',  // horizontal makes a left/right pane, and a divider running vertically
+      sizes: [75, 25],
+    })
+
+    Split(['#middle', '#bottom'], {
+      gutterSize: 9,
+      cursor: 'row-resize',
+      direction: 'vertical',  // vertical makes a top and bottom pane, and a divider running horizontally
+      sizes: ['75%', '25%'],
+    })
+
+
+
+
+    // Split(['#c', '#d'], {
+    //   direction: 'vertical',
+    //   sizes: [25, 75],
+    //   gutterSize: 8,
+    //   cursor: 'row-resize'
+    // })
+
+    // Split(['#e', '#f'], {
+    //   direction: 'vertical',
+    //   sizes: [50, 50],
+    //   gutterSize: 8,
+    //   cursor: 'row-resize'
+    // })
 
 // initialize components
 State.init()

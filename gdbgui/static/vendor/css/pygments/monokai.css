@@ -5,7 +5,7 @@
 .monokai .loc { color: white; }
 
 /* when hovering, set background color of entire row */
-.monokai .paused_on_line, .monokai td.loc:hover {
+.monokai .paused_on_line {
     background-color: #444;
     border-style: solid;
     border-top-width: 1px;
