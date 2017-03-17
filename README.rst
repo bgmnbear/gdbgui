@@ -137,7 +137,7 @@ Contributing
 ------------
 Help the gdbgui project grow by spreading the word. The more people who use it, the better it gets.
 
-.. image:: twitter.png
+.. image:: gdbgui/static/images/twitter.png
   :target: https://twitter.com/intent/tweet?text=check+out+%23gdbgui%2C+a+modern+browser-based+frontend+to+gdb+https%3A%2F%2Fgithub.com%2Fcs01%2Fgdbgui
 
 Creating and voting on issues in github will help me prioritize what to work on.

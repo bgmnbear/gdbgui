@@ -1,8 +1,9 @@
 /* styling for all html tags */
 body{
-    background: #ccc;
+    background: #f5f6f7;
     color: grey;
     border-color: grey;
+    overflow: hidden;
 }
 pre{
     overflow: visible !important;
@@ -230,8 +231,8 @@ span.wsp{
 }
 
 #gdb_command_input:focus {
-        outline-color: none;
-        box-shadow: none;
+    outline-color: none;
+    box-shadow: none;
 }
 
 
@@ -271,8 +272,8 @@ span.wsp{
     list-style: none;
 }
 ul.variable{
-        padding-left: 5px;
-        border: 0px;
+        padding-left: 0;
+        border: 0;
         margin: 0;
 }
 /* Show type of variable in lighter text */
@@ -304,10 +305,10 @@ ul.variable{
 /* Make refresh icon spin - http://www.bootply.com/128062*/
 .glyphicon-refresh-animate {
         -animation: spin .7s infinite linear;
-        -webkit-animation: spin2 .7s infinite linear;
+        -webkit-animation: webkit-spin .7s infinite linear;
 }
 
-@-webkit-keyframes spin2 {
+@-webkit-keyframes webkit-spin {
         from { -webkit-transform: rotate(0deg);}
         to { -webkit-transform: rotate(360deg);}
 }
@@ -317,72 +318,16 @@ ul.variable{
         to { transform: scale(1) rotate(360deg);}
 }
 
-
-footer a{
-    color: #ccc;
-}
-footer ul{
-    list-style: none;
-    padding: 0;
-}
-
-/* Vendor Overrides */
-
-/* awesomeplete wraps inputs in a div, and the div is really small. Make it big. */
-div.awesomplete{
-    /*width: 100%;*/
-}
-/* auto-complete library (awesomplete) has unlimited dropdown size.
-Limit to 200px high, and add scrollbar, so it doesn't take over the page */
-.awesomplete  ul {
-    overflow: auto;
-    max-height: 200px;
-}
-
-
-
-
-
-  body {
-    /*padding: 8px;*/
-    /*background-color: #F6F6F6;*/
-    box-sizing: border-box;
-    overflow: hidden;
-  }
-
-  .split {
-    -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-            box-sizing: border-box;
-
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-
-  .content {
-    border: 1px solid #C0C0C0;
-    box-shadow: inset 0 1px 2px #e4e4e4;
-    /*background-color: #fff;*/
-  }
-
-  .gutter {
-    background-color: white;
-
-    background-repeat: no-repeat;
-    background-position: 50%;
-  }
-
-  .gutter.gutter-horizontal {
+/* splitjs classes for splitting the body of the webpage (https://github.com/nathancahill/Split.js) */
+.gutter-horizontal {
     cursor: col-resize;
-    background-image: url('../grips/vertical.png');
-  }
-
-  .gutter.gutter-vertical {
+}
+.gutter-vertical {
     cursor: row-resize;
-    background-image: url('../grips/horizontal.png');
-  }
-
-  .split.split-horizontal, .gutter.gutter-horizontal {
+}
+/* splitjs is so unopinionated, it doesn't work without specific css classes (float: left) when splitting into two side-by-side
+ panes ("horizonal" */
+.split.split-horizontal, .gutter.gutter-horizontal {
     height: 100%;
     float: left;
-  }
+}
