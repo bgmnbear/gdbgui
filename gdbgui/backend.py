@@ -23,7 +23,7 @@ import platform
 import pygdbmi
 import socket
 import re
-from htmllistformatter import HtmlListFormatter
+from gdbgui.htmllistformatter import HtmlListFormatter
 from pygments.lexers import guess_lexer_for_filename
 from distutils.spawn import find_executable
 from gdbgui import __version__
