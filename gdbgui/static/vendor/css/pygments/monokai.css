@@ -7,11 +7,6 @@
 /* when hovering, set background color of entire row */
 .monokai .paused_on_line {
     background-color: #444;
-    border-style: solid;
-    border-top-width: 1px;
-    border-bottom-width: 1px;
-    border-left-width: 0px;
-    border-right-width: 0px;
     border-color: #868686 !important;
 }
 
@@ -51,10 +46,10 @@
 .monokai .ch { color: #75715e } /* Comment.Hashbang */
 .monokai .cm { color: #75715e } /* Comment.Multiline */
 /*.monokai .cp { color: #75715e } /* Comment.Preproc  THIS IS PROVIDED BY PYGMENTS BUT LOOKS WRONG*/
-.monokai .cp { color: #ff00a5 } /* Comment.Preproc UPDATED FOR GDBGUI HERE (pink, not grey) */
+.monokai .cp { color: #e8636f } /* Comment.Preproc UPDATED FOR GDBGUI HERE (pink, not grey) */
 
 /*.monokai .cpf { color: #75715e } /* Comment.PreprocFile THIS IS PROVIDED BY PYGMENTS BUT LOOKS WRONG */
-.monokai .cpf { color: #ccff00 } /* Comment.PreprocFile UPDATED FOR GDBGUI HERE (yellow, not grey) */*/
+.monokai .cpf { color: #fbff00 } /* Comment.PreprocFile UPDATED FOR GDBGUI HERE (yellow, not grey) */*/
 
 .monokai .c1 { color: #75715e } /* Comment.Single */
 .monokai .cs { color: #75715e } /* Comment.Special */

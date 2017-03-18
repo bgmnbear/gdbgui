@@ -13,16 +13,17 @@ head
     script(type="text/javascript" src='static/vendor/js/jquery.min.js')
 
     //- immediately make the ajax call to shut the gdbgui server down
-    script.
-        (function(){
-            $.ajax({
-                url: "/_shutdown",
-                cache: false,
-                method: 'GET',
-                success: null,
-                error: null,
-            })
-        })()
+    if debug == 'false'
+        script.
+            (function(){
+                $.ajax({
+                    url: "/_shutdown",
+                    cache: false,
+                    method: 'GET',
+                    success: null,
+                    error: null,
+                })
+            })()
 
 style.
     body{
@@ -33,30 +34,29 @@ style.
         width: 200px;
         display: inline-block;
         margin: 10px;
-        transition: background-color .2s, font-size .2s;
-        font-size: 1.4em;
+        transition: background-color .4s;
+        font-size: 1.1em;
         padding: 20px;
         border-style: solid;
         border-color: #ccc;
         border-width: 1px;
         background-color: white;
         vertical-align: top;
+        border-radius: 10px;
     }
 
     .square:hover {
-        font-size: 1.5em;
+        background-color: #dff7ff;
     }
     a:hover{
         text-decoration: none;
     }
 
-}
-
 body
 
     div.container-fluid
         p
-        h1 gdbgui has been shut down
+        h3 gdbgui has been shut down
 
         div.row
 
@@ -74,4 +74,4 @@ body
                 img(src='/static/images/twitter.png')
                 span share on twitter
 
-            a.square(href='http://grassfedcode.com') a grassfedcode.com project
+            a.square(href='http://grassfedcode.com') a grassfedcode project

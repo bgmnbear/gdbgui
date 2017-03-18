@@ -12,12 +12,16 @@
 .awesomplete {
     display: inline-block;
     position: relative;
+    width: 100%;
 }
 
 .awesomplete > input {
     display: block;
+    height: 2em;
 }
-
+#source_file_dropdown_button{
+    height: 2em;
+}
 .awesomplete > ul {
     position: absolute;
     left: 0;

@@ -9,7 +9,6 @@ head
 
     link(href='static/css/gdbgui.css?_=#{timetag_to_prevent_caching}', rel='stylesheet')
     link(href='static/vendor/css/bootstrap.min.css', rel='stylesheet')
-    link(href='static/vendor/css/messenger.css', rel='stylesheet')
     link(href='static/vendor/css/gdbgui_awesomeplete.css', rel='stylesheet')
 
     - for theme in themes
@@ -18,12 +17,12 @@ head
     script(type="text/javascript" src='static/vendor/js/jquery.min.js')
     script(type="text/javascript" src='static/vendor/js/jquery.flot-0.8.3.min.js')
     script(type="text/javascript" src='static/vendor/js/bootstrap.min.js')
-    script(type="text/javascript" src='static/vendor/js/messenger.min.js')
     script(type="text/javascript" src='static/vendor/js/lodash.min.js')
     script(type="text/javascript" src='static/vendor/js/moment.min.js')
     script(type="text/javascript" src='static/vendor/js/awesomeplete.min.js')
     script(type="text/javascript" src='static/vendor/js/socket.io-1.3.5.min.js')
-    script(type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/split.js/1.2.0/split.min.js')
+    script(type="text/javascript" src='static/vendor/js/socket.io-1.3.5.min.js')
+    script(type="text/javascript" src='static/vendor/js/splitjs.min-1.2.0.js')
 
 
 body(style='margin: 0; width: 100%; height: 100%;')
@@ -161,10 +160,10 @@ body(style='margin: 0; width: 100%; height: 100%;')
 
     #bottom
         //- gdb console
-        div#bottom(style='margin-bottom: -5px; display: block; overflow: auto;')
+        div#bottom(style='display: block; overflow: auto;')
 
             //- gdb console output
-            table(style='width:100%; height:100%; margin: 0; padding-bottom: 137px;')
+            table(style='width:100%; height:100%; margin: 0; padding-bottom: 125;')
                 tr(style='height: 100%;')
                     td
                         div#console.gdb_content_div(style='border-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; height: 100%;')
@@ -175,7 +174,7 @@ body(style='margin: 0; width: 100%; height: 100%;')
                     td(style='width: 30px; vertical-align: middle;')
                         span(style='margin-top: 10px') (#{interpreter})
                     td(style='width: 100%; float: left; vertical-align: middle;')
-                         input.form-control.dropdown-input#gdb_command_input(type="text", autocomplete="on", data-list="#gdb_command_reference", placeholder='enter #{interpreter}/inferior process command. You can also change the tty of the inferior process with "set inferior-tty [ tty ]"', style='float: left')
+                         input.form-control.dropdown-input#gdb_command_input(type="text", autocomplete="on", data-list="#gdb_command_reference", placeholder='enter #{interpreter}/inferior process command. To change the tty of the inferior process: "set inferior-tty [ tty ]"', style='float: left')
                     td(style='width: 15px; vertical-align: middle; padding-right: 10px')
                         span.glyphicon.glyphicon-ban-circle.clear_console.pointer(title='clear console')
 

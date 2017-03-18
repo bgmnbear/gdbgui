@@ -23,15 +23,17 @@ import platform
 import pygdbmi
 import socket
 import re
-from gdbgui.htmllistformatter import HtmlListFormatter
-from pygments.lexers import guess_lexer_for_filename
+from pygments.lexers import get_lexer_for_filename
 from distutils.spawn import find_executable
-from gdbgui import __version__
 from flask import Flask, request, render_template, jsonify
 from flask_socketio import SocketIO, emit
 from pygdbmi.gdbcontroller import GdbController
-
 BASE_PATH = os.path.dirname(os.path.realpath(__file__))
+PARENTDIR = os.path.dirname(BASE_PATH)
+sys.path.append(PARENTDIR)
+from gdbgui import htmllistformatter
+from gdbgui import __version__
+
 TEMPLATE_DIR = os.path.join(BASE_PATH, 'templates')
 STATIC_DIR = os.path.join(BASE_PATH, 'static')
 DEFAULT_HOST = '127.0.0.1'
@@ -40,7 +42,6 @@ IS_A_TTY = sys.stdout.isatty()
 DEFAULT_GDB_EXECUTABLE = 'gdb'
 DEFAULT_GDB_ARGS = ['-nx', '--interpreter=mi2']
 DEFAULT_LLDB_ARGS = ['--interpreter=mi2']
-LLDB_SERVER_PATH = 'lldb-server'  # this is required by lldb-mi
 
 match = re.match('darwin-(\d+)\..*', platform.platform().lower())
 if match is None:
@@ -50,14 +51,17 @@ elif int(match.groups()[0]) >= 16:
     # os's security requirements
     STARTUP_WITH_SHELL_OFF = True
 
-
+# Create flask application and add some configuration keys to be used in various callbacks
 app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR)
+# templates are written in pug, so add that capability to flask
+app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
 app.config['initial_binary_and_args'] = []
 app.config['gdb_path'] = DEFAULT_GDB_EXECUTABLE
 app.config['show_gdbgui_upgrades'] = True
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['LLDB'] = False  # assume false, okay to change later
 
-# switch to gevent once https://github.com/miguelgrinberg/Flask-SocketIO/issues/413 is resolved
-socketio = SocketIO(async_mode='eventlet')
+socketio = SocketIO()
 _gdb_state = {
               # each key of gdb_controllers is websocket client id (each tab in browser gets its own id),
               # and value is pygdbmi.GdbController instance
@@ -69,17 +73,21 @@ _gdb_state = {
 
 def setup_backend(serve=True, host=DEFAULT_HOST, port=DEFAULT_PORT, debug=False, open_browser=True, testing=False, LLDB=False):
     """Run the server of the gdb gui"""
-    if LLDB is True and find_executable(LLDB_SERVER_PATH) is None:
-        pygdbmi.printcolor.print_red('lldb-mi is being used, but the executable "%s" was not found. It is required by lldb-mi.' % LLDB_SERVER_PATH)
-        sys.exit(1)
-
+    app.config['LLDB'] = LLDB
     url = '%s:%s' % (host, port)
     url_with_prefix = 'http://' + url
 
-    # templates are written in pug, so add that capability to flask
-    app.jinja_env.add_extension('pypugjs.ext.jinja.PyPugJSExtension')
-    app.config['TEMPLATES_AUTO_RELOAD'] = True
-    app.config['LLDB'] = LLDB
+
+    if debug:
+        # gevent works on linux kernels < v3.9, eventlet does not, so gevent is preferred.
+        # However, in debug mode gevent monkey patches (removes) python modules used by pygdbmi,
+        # so it cannot be used if debug is on
+        # https://github.com/miguelgrinberg/Flask-SocketIO/issues/413 is resolved
+        async_mode = 'eventlet'
+    else:
+
+        async_mode = 'gevent'
+    socketio.server_options['async_mode'] = async_mode
     socketio.init_app(app)
 
     if open_browser is True and debug is False and testing is False:
@@ -92,7 +100,6 @@ def setup_backend(serve=True, host=DEFAULT_HOST, port=DEFAULT_PORT, debug=False,
             print('\n\n** view app at http://%s:%d **\n\n' % (DEFAULT_HOST, port))
         else:
             print('\n\n** view app at http://%s:%d **\n\n' % (socket.gethostbyname(socket.gethostname()), port))
-        sys.stdout.flush()
         socketio.run(app, debug=debug, port=int(port), host=host, extra_files=get_extra_files())
 
 
@@ -253,9 +260,8 @@ def gdbgui():
             'themes': THEMES,
         }
 
-
     return render_template('gdbgui.pug',
-        timetag_to_prevent_caching=time_sec,
+        version=__version__,
         debug=json.dumps(app.debug),
         interpreter=interpreter,
         initial_data=json.dumps(initial_data),
@@ -265,7 +271,7 @@ def gdbgui():
 @app.route('/shutdown')
 def shutdown_webview():
     """Render the main gdbgui interface"""
-    return render_template('shutdown.pug', timetag_to_prevent_caching=0)
+    return render_template('shutdown.pug', debug=app.debug)
 
 
 @app.route('/_shutdown')
@@ -300,22 +306,33 @@ def get_last_modified_unix_sec():
 def read_file():
     """Read a file and return its contents as an array"""
     path = request.args.get('path')
+    highlight = json.loads(request.args.get('highlight'))
+
     if path and os.path.isfile(path):
         try:
             last_modified = os.path.getmtime(path)
             with open(path, 'r') as f:
-
                 code = f.read()
-                formatter = HtmlListFormatter(lineseparator='')  # Don't add newlines after each line
-                # guess lexer from file extension, don't give code sample to aid it since that takes longer
-                lexer = guess_lexer_for_filename(path, '')
+
+            formatter = htmllistformatter.HtmlListFormatter(lineseparator='')  # Don't add newlines after each line
+            try:
+                lexer = get_lexer_for_filename(path)
+            except ClassNotFound:
+                lexer = None
+
+            if lexer and highlight:
+                highlighted = True
                 tokens = lexer.get_tokens(code)  # convert string into tokens
                 # format tokens into nice, marked up list of html
-                highlighted_source_code_list = formatter.get_marked_up_list(tokens)
+                source_code = formatter.get_marked_up_list(tokens)
+            else:
+                highlighted = False
+                source_code = code.split('\n')
 
-                return jsonify({'source_code': highlighted_source_code_list,
-                                'path': path,
-                                'last_modified_unix_sec': last_modified})
+            return jsonify({'source_code': source_code,
+                            'path': path,
+                            'last_modified_unix_sec': last_modified,
+                            'highlighted': highlighted})
         except Exception as e:
             return client_error({'message': '%s' % e})
 
@@ -331,9 +348,9 @@ def main():
 
     parser.add_argument('-p', '--port', help='The port on which gdbgui will be hosted. Defaults to %s' % DEFAULT_PORT, default=DEFAULT_PORT)
     parser.add_argument('--host', help='The host ip address on which gdbgui serve. Defaults to %s' % DEFAULT_HOST, default=DEFAULT_HOST)
-    parser.add_argument('-r,', '--remote', help='Sets host to 0.0.0.0 (allows remote access to gdbgui) and sets no_browser to True. '
-        'Useful when running on remote machine and you want to view from your own browser, or let someone else debug your application remotely. '
-        'All other options left unchanged.', action='store_true', )
+    parser.add_argument('-r', '--remote', help='Shortcut to sets host to 0.0.0.0 and suppress browser from opening. This allows remote access '
+                        'to gdbgui and is useful when running on a remote machine that you want to view/debug from your local '
+                        'browser, or let someone else debug your application remotely.', action='store_true', )
     parser.add_argument('-g', '--gdb', help='Path to gdb or lldb executable. Defaults to %s. lldb support is experimental.' % DEFAULT_GDB_EXECUTABLE, default=DEFAULT_GDB_EXECUTABLE)
     parser.add_argument('--lldb', help='Use lldb commands (experimental)', action='store_true')
     parser.add_argument('-v', '--version', help='Print version', action='store_true')

@@ -147,14 +147,14 @@ td.assembly{
     font-size: 0.8em;
 }
 #code_table{
-    font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+    font-family: monospace;
     border-collapse: separate;
 }
 .srccode td{
     padding-left: 3px;
     border-style: solid;
     border-top-width: 1px;
-    border-right-width: 0px;
+    border-right-width: 1px;
     border-bottom-width: 1px;
     border-left-width: 0px;
     border-color: transparent;
@@ -184,6 +184,13 @@ span.wsp{
 }
 .loc{
     height: 18px
+}
+.paused_on_line {
+    border-style: solid;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 0px;
+    border-right-width: 1px;
 }
 .dropdown-btn {
         vertical-align: top;
