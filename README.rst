@@ -113,9 +113,9 @@ Flags (all are optional):
   -h, --help            show this help message and exit
   -p PORT, --port PORT  The port on which gdbgui will be hosted
   --host HOST           The host ip address on which gdbgui serve.
-  -r, --remote         Sets host to 0.0.0.0 (allows remote access to gdbgui)
-                        and sets no_browser to True. Useful when running on
-                        remote machine and you want to view from your own
+  -r, --remote          Shortcut to sets host to 0.0.0.0 and suppress browser from opening.
+                        This allows remote access to gdbgui and is useful when running on a
+                        remote machine that you want to view/debug from your local
                         browser, or let someone else debug your application
                         remotely.
   -g GDB, --gdb GDB     Path to gdb executable or lldb-mi executable. Defaults is 'gdb'. lldb

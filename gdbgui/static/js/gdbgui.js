@@ -2192,7 +2192,11 @@ const Expressions = {
 
         // can only be plotted if: value is an expression (not a local), and value is numeric
         new_obj.can_plot = !new_obj.autocreated_for_locals && !window.isNaN(parseFloat(new_obj.value))
-        new_obj.dom_id_for_plot = new_obj.name.replace(/\./g, '-').replace(/\$/g, '_')  // replace '.' with '-' since '.' does not work in the DOM
+        new_obj.dom_id_for_plot = new_obj.name
+            .replace(/\./g, '-')  // replace '.' with '-'
+            .replace(/\$/g, '_')  // replace '$' with '-'
+            .replace(/\[/g, '_')  // replace '[' with '_'
+            .replace(/\]/g, '_')  // replace ']' with '_'
         new_obj.show_plot = false  // used when rendering to decide whether to show plot or not
         // push to this array each time a new value is assigned if value is numeric.
         // Plots use this data

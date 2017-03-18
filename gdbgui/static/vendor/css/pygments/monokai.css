@@ -49,7 +49,7 @@
 .monokai .cp { color: #e8636f } /* Comment.Preproc UPDATED FOR GDBGUI HERE (pink, not grey) */
 
 /*.monokai .cpf { color: #75715e } /* Comment.PreprocFile THIS IS PROVIDED BY PYGMENTS BUT LOOKS WRONG */
-.monokai .cpf { color: #fbff00 } /* Comment.PreprocFile UPDATED FOR GDBGUI HERE (yellow, not grey) */*/
+.monokai .cpf { color: #fbff00 } /* Comment.PreprocFile UPDATED FOR GDBGUI HERE (yellow, not grey) */
 
 .monokai .c1 { color: #75715e } /* Comment.Single */
 .monokai .cs { color: #75715e } /* Comment.Special */
